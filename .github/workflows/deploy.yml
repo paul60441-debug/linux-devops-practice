@@ -7,17 +7,16 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: SSH Deploy
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          password: ${{ secrets.PASSWORD }}
-          script:
-            cd ~/docker/day17
-            git pull
-            docker compose down
-            docker compose up -d
+      - name: Pull latest code
+        run: |
+          cd ~/docker/day17
+          git pull
+
+      - name: Restart containers
+        run: |
+          cd ~/docker/day17
+          docker compose down
+          docker compose up -d
